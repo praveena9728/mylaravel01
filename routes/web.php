@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Model\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +19,39 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+/*Route::group(['prefix' => 'Dashboard', 'middleware' => 'auth' , 'namespace' => 'Admin'], function () {
+    Route::get('/' , 'DashboardController@index')->name('Dashboard');
+});*/
+Route::get('/', 'PostController@index')->name('Post.index');
 
-require __DIR__.'/auth.php';
+//Route::get('/' , 'DashboardController@index')->name('Dashboard');
+
+/*
+Route::group(['prefix' => 'Dashboard', 'middleware' => 'auth' ], function () {
+});*/
+
+
+/*Route::get('/','Dashboard',function () {
+    return view('Dashboard');
+})->middleware(['auth'])->name('Dashboard');
+
+Route::get('Dashboard','DashboardController');
+*/
+
+
+Route::group(['prefix' => 'Post'], function () {
+    Route::get('/', 'PostController@index')->name('Post.index');
+    Route::get('create/','PostController@create')->name('Post.create');
+    Route::post('/','PostController@store')->name('Post.store');
+
+    Route::group(['prefix' => '{Post}'], function () {
+    Route::get('/show','PostController@show')->name('Post.show');
+    Route::get('/edit','PostController@edit')->name('Post.edit');
+    Route::patch('/','Postcontroller@update')->name('Post.update');
+    Route::get('/delete','PostController@delete')->name('Post.delete');
+    Route::delete('/','PostController@destroy')->name('Post.destroy');
+    });
+
+
+});
+ require __DIR__.'/auth.php';

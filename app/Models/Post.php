@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+ 
+public $fillable = [
+    'user_id' , 'title' , 'content'
+];
 
-public function user(){
-    return $this->belongsTo(User::class,'user_id');
+public function User(){
+    return $this->belongsTo(user::class,'user_id');
  }
 }
